@@ -1,9 +1,13 @@
 package com.augusto.testeperinity.services;
 
 import com.augusto.testeperinity.entities.Pessoa;
+import com.augusto.testeperinity.entities.Tarefa;
 import com.augusto.testeperinity.repositories.PessoaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PessoaService {
@@ -12,6 +16,31 @@ public class PessoaService {
     private PessoaRepository pessoaRepository;
 
     public Pessoa createPessoa(Pessoa pessoa){
+
+        if (pessoa.getNome().isEmpty()){
+            throw new RuntimeException("O nome da pessoa não pode ser vazio");
+        }
         return pessoaRepository.save(pessoa);
+    }
+
+    public Pessoa updatePessoa(Long id, Pessoa pessoa){
+        Optional<Pessoa> pessoaOptional = pessoaRepository.findById(id);
+
+        if (pessoaOptional.isPresent()){
+            Pessoa pessoaExistente = pessoaOptional.get();
+
+            BeanUtils.copyProperties(pessoa, pessoaExistente, "id","tarefas" );
+
+            pessoaExistente.getTarefas().clear();
+            for (Tarefa tarefa : pessoa.getTarefas()){
+                tarefa.setPessoa(pessoaExistente);
+                pessoaExistente.getTarefas().add(tarefa);
+            }
+
+            return pessoaRepository.save(pessoaExistente);
+
+        } else {
+            throw new RuntimeException("Pessoa não encontrada");
+        }
     }
 }

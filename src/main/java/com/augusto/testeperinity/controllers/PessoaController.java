@@ -15,8 +15,23 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @PostMapping
-    public ResponseEntity<Pessoa> createPessoa(@RequestBody Pessoa pessoa){
-        Pessoa pessoaCriada = pessoaService.createPessoa(pessoa);
-        return new ResponseEntity<>(pessoaCriada, HttpStatus.CREATED);
+    public ResponseEntity<Object> createPessoa(@RequestBody Pessoa pessoa){
+
+        try {
+            Pessoa pessoaCriada = pessoaService.createPessoa(pessoa);
+            return new ResponseEntity<>(pessoaCriada, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/id")
+    public ResponseEntity<Object> updatePessoa(@RequestParam Long id, @RequestBody Pessoa pessoa){
+        try {
+            Pessoa pessoaAlterada = pessoaService.updatePessoa(id, pessoa);
+            return new ResponseEntity<>(pessoaAlterada, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }
