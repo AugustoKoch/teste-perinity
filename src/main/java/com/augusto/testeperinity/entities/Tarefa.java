@@ -45,6 +45,7 @@ public class Tarefa {
     @JsonBackReference("pessoa-tarefa")
     private Pessoa pessoa;
 
+    @NotNull(message = "O departamento deve ser preenchido.")
     @ManyToOne
     @JoinColumn(name = "departamento_id")
     @JsonBackReference("departamento-tarefa")
