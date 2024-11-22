@@ -3,6 +3,8 @@ package com.augusto.testeperinity.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +26,10 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome deve ser preenchido.")
     private String nome;
 
+    @NotNull(message = "O departamento deve ser preenchido.")
     @ManyToOne
     @JoinColumn(name = "departamento_id")
     @JsonBackReference("departamento-pessoa")

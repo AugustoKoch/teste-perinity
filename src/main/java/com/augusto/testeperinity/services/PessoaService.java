@@ -16,10 +16,6 @@ public class PessoaService {
     private PessoaRepository pessoaRepository;
 
     public Pessoa createPessoa(Pessoa pessoa){
-
-        if (pessoa.getNome().isEmpty()){
-            throw new RuntimeException("O nome da pessoa não pode ser vazio");
-        }
         return pessoaRepository.save(pessoa);
     }
 

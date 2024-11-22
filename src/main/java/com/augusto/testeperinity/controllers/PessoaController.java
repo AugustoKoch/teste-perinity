@@ -2,6 +2,7 @@ package com.augusto.testeperinity.controllers;
 
 import com.augusto.testeperinity.entities.Pessoa;
 import com.augusto.testeperinity.services.PessoaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @PostMapping
-    public ResponseEntity<Object> createPessoa(@RequestBody Pessoa pessoa){
+    public ResponseEntity<Object> createPessoa(@Valid @RequestBody Pessoa pessoa){
 
         try {
             Pessoa pessoaCriada = pessoaService.createPessoa(pessoa);
