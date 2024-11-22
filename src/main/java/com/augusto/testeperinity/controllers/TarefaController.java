@@ -16,12 +16,14 @@ public class TarefaController {
     @Autowired
     private TarefaService tarefaService;
 
+    //Adicionar uma tarefa (post/tarefas)
     @PostMapping
     public ResponseEntity<Tarefa> createTarefa(@Valid @RequestBody Tarefa tarefa) {
             Tarefa tarefaCriada = tarefaService.createTarefa(tarefa);
             return new ResponseEntity<>(tarefaCriada, HttpStatus.CREATED);
     }
 
+    //Alocar uma pessoa na tarefa que tenha o mesmo departamento (put/tarefas/alocar/{id})
     @PutMapping("/alocar/{id}")
     public ResponseEntity<Object> alocarPessoa(@PathVariable Long id, @RequestBody AlocacaoDTO alocacaoDTO) {
         Long pessoaId = alocacaoDTO.getPessoaId();

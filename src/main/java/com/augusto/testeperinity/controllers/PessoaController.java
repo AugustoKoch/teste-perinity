@@ -15,6 +15,7 @@ public class PessoaController {
     @Autowired
     private PessoaService pessoaService;
 
+    //Adicionar uma pessoa (post/pessoas)
     @PostMapping
     public ResponseEntity<Object> createPessoa(@Valid @RequestBody Pessoa pessoa){
 
@@ -26,6 +27,7 @@ public class PessoaController {
         }
     }
 
+    //Alterar uma pessoa (put/pessoas/{id})
     @PutMapping("/{id}")
     public ResponseEntity<Object> updatePessoa(@PathVariable Long id, @RequestBody Pessoa pessoa){
         try {
@@ -36,6 +38,7 @@ public class PessoaController {
         }
     }
 
+    //Remover pessoa (delete/pessoas/{id})
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePessoa(@PathVariable Long id){
         try {
