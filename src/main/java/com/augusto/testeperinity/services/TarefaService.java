@@ -37,7 +37,7 @@ public class TarefaService {
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
 
         Pessoa pessoa = pessoaRepository.findById(pessoaId)
-                .orElseThrow(() -> new RuntimeException("Pessoa não econtrada"));
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
 
         if (!tarefa.getDepartamento().equals(pessoa.getDepartamento())) {
             throw new RuntimeException("Os departamentos de pessoa e tarefa não coincidem.");
@@ -46,6 +46,14 @@ public class TarefaService {
         tarefa.setPessoa(pessoa);
         pessoa.getTarefas().add(tarefa);
 
+        return tarefaRepository.save(tarefa);
+    }
+
+    public Tarefa finalizarTarefa(Long id) {
+        Tarefa tarefa = tarefaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+
+        tarefa.setFinalizado(true);
         return tarefaRepository.save(tarefa);
     }
 }
