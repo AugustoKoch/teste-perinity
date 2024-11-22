@@ -25,8 +25,8 @@ public class PessoaController {
         }
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<Object> updatePessoa(@RequestParam Long id, @RequestBody Pessoa pessoa){
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updatePessoa(@PathVariable Long id, @RequestBody Pessoa pessoa){
         try {
             Pessoa pessoaAlterada = pessoaService.updatePessoa(id, pessoa);
             return new ResponseEntity<>(pessoaAlterada, HttpStatus.OK);
@@ -35,8 +35,8 @@ public class PessoaController {
         }
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<Object> deletePessoa(@RequestParam Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletePessoa(@PathVariable Long id){
         try {
             pessoaService.deletePessoa(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

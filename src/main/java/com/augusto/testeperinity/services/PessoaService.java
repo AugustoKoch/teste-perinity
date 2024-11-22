@@ -31,12 +31,14 @@ public class PessoaService {
 
             BeanUtils.copyProperties(pessoa, pessoaExistente, "id","tarefas" );
 
-            pessoaExistente.getTarefas().clear();
-            for (Tarefa tarefa : pessoa.getTarefas()){
-                tarefa.setPessoa(pessoaExistente);
-                pessoaExistente.getTarefas().add(tarefa);
-            }
 
+            pessoaExistente.getTarefas().clear();
+            if (pessoa.getTarefas() != null) {
+                for (Tarefa tarefa : pessoa.getTarefas()) {
+                    tarefa.setPessoa(pessoaExistente);
+                    pessoaExistente.getTarefas().add(tarefa);
+                }
+            }
             return pessoaRepository.save(pessoaExistente);
 
         } else {
