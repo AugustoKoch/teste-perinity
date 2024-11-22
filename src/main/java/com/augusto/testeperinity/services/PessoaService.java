@@ -43,4 +43,14 @@ public class PessoaService {
             throw new RuntimeException("Pessoa não encontrada");
         }
     }
+
+    public void deletePessoa(Long id){
+        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+
+        if (pessoa.isPresent()){
+            pessoaRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Pessoa não encontrada");
+        }
+    }
 }

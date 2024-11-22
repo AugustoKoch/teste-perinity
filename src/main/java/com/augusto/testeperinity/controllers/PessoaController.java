@@ -34,4 +34,14 @@ public class PessoaController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/id")
+    public ResponseEntity<Object> deletePessoa(@RequestParam Long id){
+        try {
+            pessoaService.deletePessoa(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }
