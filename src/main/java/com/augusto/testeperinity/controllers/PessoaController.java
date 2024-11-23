@@ -1,5 +1,6 @@
 package com.augusto.testeperinity.controllers;
 
+import com.augusto.testeperinity.DTOs.PessoaResumoDTO;
 import com.augusto.testeperinity.entities.Pessoa;
 import com.augusto.testeperinity.services.PessoaService;
 import jakarta.validation.Valid;
@@ -8,12 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pessoas")
 public class PessoaController {
 
     @Autowired
     private PessoaService pessoaService;
+
 
     //Adicionar uma pessoa (post/pessoas)
     @PostMapping
@@ -27,6 +31,15 @@ public class PessoaController {
         }
     }
 
+
+    //Listar pessoas trazendo nome, departamento, total de horas gastas nas tarefas.(get/pessoas)
+    @GetMapping
+    public ResponseEntity<List<PessoaResumoDTO>> getPessoas() {
+        List<PessoaResumoDTO> pessoas = pessoaService.getPessoas();
+        return new ResponseEntity<>(pessoas, HttpStatus.OK);
+    }
+
+
     //Alterar uma pessoa (put/pessoas/{id})
     @PutMapping("/{id}")
     public ResponseEntity<Object> updatePessoa(@PathVariable Long id, @RequestBody Pessoa pessoa){
@@ -37,6 +50,7 @@ public class PessoaController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
 
     //Remover pessoa (delete/pessoas/{id})
     @DeleteMapping("/{id}")
