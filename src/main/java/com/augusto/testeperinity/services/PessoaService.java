@@ -1,5 +1,6 @@
 package com.augusto.testeperinity.services;
 
+import com.augusto.testeperinity.DTOs.PessoaMediaHorasDTO;
 import com.augusto.testeperinity.DTOs.PessoaResumoDTO;
 import com.augusto.testeperinity.entities.Departamento;
 import com.augusto.testeperinity.entities.Pessoa;
@@ -10,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,33 @@ public class PessoaService {
                         somaTotalHoras(pessoa)
                 ))
                 .toList();
+    }
+
+    public PessoaMediaHorasDTO getPessoasPeriodo(String nome, LocalDate dataInicio, LocalDate dataFim) {
+
+        Pessoa pessoa = pessoaRepository.findPessoaByNome(nome);
+        if (pessoa == null) {
+            throw new RuntimeException("Nenhuma pessoa com o nome '" + nome + "' encontrada.");
+        }
+
+        List<Tarefa> tarefas = pessoa.getTarefas().stream()
+                .filter(tarefa -> tarefa.getPrazo().isAfter(dataInicio.minusDays(1)) &&
+                        tarefa.getPrazo().isBefore(dataFim.plusDays(1)))
+                .toList();
+
+        if (tarefas.isEmpty()) {
+            throw new RuntimeException("Nenhuma tarefa encontrada para " + nome + " no período especificado.");
+        }
+
+        int totalHoras = 0;
+        for (Tarefa tarefa : tarefas) {
+            int duracao = tarefa.getDuracao();
+            totalHoras += duracao;
+
+        }
+        double mediaHoras = (double) totalHoras / tarefas.size();
+
+        return new PessoaMediaHorasDTO(nome, mediaHoras);
     }
 
     public Pessoa updatePessoa(Long id, Pessoa pessoa){

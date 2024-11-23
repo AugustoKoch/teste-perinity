@@ -1,14 +1,17 @@
 package com.augusto.testeperinity.controllers;
 
+import com.augusto.testeperinity.DTOs.PessoaMediaHorasDTO;
 import com.augusto.testeperinity.DTOs.PessoaResumoDTO;
 import com.augusto.testeperinity.entities.Pessoa;
 import com.augusto.testeperinity.services.PessoaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,6 +40,22 @@ public class PessoaController {
     public ResponseEntity<List<PessoaResumoDTO>> getPessoas() {
         List<PessoaResumoDTO> pessoas = pessoaService.getPessoas();
         return new ResponseEntity<>(pessoas, HttpStatus.OK);
+    }
+
+
+    //Buscar pessoas por nome e período, retorna média de horas gastas por tarefa. (get/pessoas/gastos)
+    @GetMapping("/gastos")
+    public ResponseEntity<Object> getPessoasPeriodo(
+            @RequestParam String nome,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+
+        try {
+            PessoaMediaHorasDTO pessoaMediaHorasDTO = pessoaService.getPessoasPeriodo(nome, dataInicio, dataFim);
+            return new ResponseEntity<>(pessoaMediaHorasDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
