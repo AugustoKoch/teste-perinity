@@ -1,8 +1,10 @@
 package com.augusto.testeperinity.services;
 
 import com.augusto.testeperinity.DTOs.PessoaResumoDTO;
+import com.augusto.testeperinity.entities.Departamento;
 import com.augusto.testeperinity.entities.Pessoa;
 import com.augusto.testeperinity.entities.Tarefa;
+import com.augusto.testeperinity.repositories.DepartamentoRepository;
 import com.augusto.testeperinity.repositories.PessoaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,16 @@ public class PessoaService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
 
     public Pessoa createPessoa(Pessoa pessoa){
+        Departamento departamento = departamentoRepository.findById(pessoa.getDepartamento().getId())
+                .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
+
+        pessoa.setDepartamento(departamento);
+        departamento.getPessoas().add(pessoa);
+
         return pessoaRepository.save(pessoa);
     }
 
