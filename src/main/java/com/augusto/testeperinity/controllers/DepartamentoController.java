@@ -1,5 +1,6 @@
 package com.augusto.testeperinity.controllers;
 
+import com.augusto.testeperinity.DTOs.DepartamentoDTO;
 import com.augusto.testeperinity.entities.Departamento;
 import com.augusto.testeperinity.services.DepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,11 @@ public class DepartamentoController {
         return new ResponseEntity<>(departamentoCriado, HttpStatus.CREATED);
     }
 
+
+    //Listar departamento e quantidade de pessoas e tarefas (get/departamentos)
     @GetMapping
-    public List<Departamento> getDepartamentos() {
-        return departamentoService.getDepartamentos();
+    public ResponseEntity<List<DepartamentoDTO>> getDepartamentos() {
+        List<DepartamentoDTO> departamentos = departamentoService.getDepartamentos();
+        return new ResponseEntity<>(departamentos, HttpStatus.OK);
     }
 }
