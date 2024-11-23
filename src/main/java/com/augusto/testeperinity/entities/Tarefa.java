@@ -38,7 +38,7 @@ public class Tarefa {
     @NotNull(message = "A duração deve ser preenchida.")
     private Integer duracao;
 
-    private Boolean finalizado;
+    private Boolean finalizado = false;
 
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
