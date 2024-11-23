@@ -17,6 +17,7 @@ public class DepartamentoController {
     @Autowired
     DepartamentoService departamentoService;
 
+
     @PostMapping
     public ResponseEntity<Departamento> createDepartamento(@RequestBody Departamento departamento) {
         Departamento departamentoCriado = departamentoService.createDepartamento(departamento);

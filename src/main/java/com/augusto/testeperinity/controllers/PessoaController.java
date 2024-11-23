@@ -37,21 +37,21 @@ public class PessoaController {
 
     //Listar pessoas trazendo nome, departamento, total de horas gastas nas tarefas.(get/pessoas)
     @GetMapping
-    public ResponseEntity<List<PessoaResumoDTO>> getPessoas() {
-        List<PessoaResumoDTO> pessoas = pessoaService.getPessoas();
+    public ResponseEntity<List<PessoaResumoDTO>> getPessoasTotalHoras() {
+        List<PessoaResumoDTO> pessoas = pessoaService.getPessoasTotalHoras();
         return new ResponseEntity<>(pessoas, HttpStatus.OK);
     }
 
 
     //Buscar pessoas por nome e período, retorna média de horas gastas por tarefa. (get/pessoas/gastos)
     @GetMapping("/gastos")
-    public ResponseEntity<Object> getPessoasPeriodo(
+    public ResponseEntity<Object> getPessoaHorasPorPeriodo(
             @RequestParam String nome,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
 
         try {
-            PessoaMediaHorasDTO pessoaMediaHorasDTO = pessoaService.getPessoasPeriodo(nome, dataInicio, dataFim);
+            PessoaMediaHorasDTO pessoaMediaHorasDTO = pessoaService.getPessoaHorasPorPeriodo(nome, dataInicio, dataFim);
             return new ResponseEntity<>(pessoaMediaHorasDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

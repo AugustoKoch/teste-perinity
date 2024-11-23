@@ -23,6 +23,14 @@ public class PessoaService {
     @Autowired
     private DepartamentoRepository departamentoRepository;
 
+
+    private static int somaTotalHoras(Pessoa pessoa) {
+        return pessoa.getTarefas().stream()
+                .mapToInt(tarefa -> tarefa.getDuracao() != null ? tarefa.getDuracao() : 0)
+                .sum();
+    }
+
+
     public Pessoa createPessoa(Pessoa pessoa){
         Departamento departamento = departamentoRepository.findById(pessoa.getDepartamento().getId())
                 .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
@@ -33,25 +41,21 @@ public class PessoaService {
         return pessoaRepository.save(pessoa);
     }
 
-    private static int somaTotalHoras(Pessoa pessoa) {
-        return pessoa.getTarefas().stream()
-                .mapToInt(tarefa -> tarefa.getDuracao() != null ? tarefa.getDuracao() : 0)
-                .sum();
-    }
 
-    public List<PessoaResumoDTO> getPessoas() {
+    public List<PessoaResumoDTO> getPessoasTotalHoras() {
         List<Pessoa> pessoas = pessoaRepository.findAll();
 
         return pessoas.stream()
                 .map(pessoa -> new PessoaResumoDTO(
                         pessoa.getNome(),
-                        pessoa.getDepartamento() != null ? pessoa.getDepartamento().getNome() : "Sem departamento", //remover esse ternario quando ajustar resgistros
+                        pessoa.getDepartamento().getNome(),
                         somaTotalHoras(pessoa)
                 ))
                 .toList();
     }
 
-    public PessoaMediaHorasDTO getPessoasPeriodo(String nome, LocalDate dataInicio, LocalDate dataFim) {
+
+    public PessoaMediaHorasDTO getPessoaHorasPorPeriodo(String nome, LocalDate dataInicio, LocalDate dataFim) {
 
         Pessoa pessoa = pessoaRepository.findPessoaByNome(nome);
         if (pessoa == null) {
@@ -78,6 +82,7 @@ public class PessoaService {
         return new PessoaMediaHorasDTO(nome, mediaHoras);
     }
 
+
     public Pessoa updatePessoa(Long id, Pessoa pessoa){
         Optional<Pessoa> pessoaOptional = pessoaRepository.findById(id);
 
@@ -100,6 +105,7 @@ public class PessoaService {
             throw new RuntimeException("Pessoa não encontrada");
         }
     }
+
 
     public void deletePessoa(Long id){
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);

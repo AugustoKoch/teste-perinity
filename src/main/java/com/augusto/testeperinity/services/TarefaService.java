@@ -35,11 +35,13 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
+
     public List<Tarefa> getTarefasPendentes() {
         return tarefaRepository.findTop3ByPessoaIsNullAndFinalizadoFalseOrderByPrazoAsc();
     }
 
-    public Tarefa alocarPessoa(Long tarefaId, Long pessoaId) {
+
+    public Tarefa alocarPessoaNaTarefa(Long tarefaId, Long pessoaId) {
         Tarefa tarefa = tarefaRepository.findById(tarefaId)
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
 
@@ -55,6 +57,7 @@ public class TarefaService {
 
         return tarefaRepository.save(tarefa);
     }
+
 
     public Tarefa finalizarTarefa(Long id) {
         Tarefa tarefa = tarefaRepository.findById(id)

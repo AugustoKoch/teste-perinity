@@ -15,9 +15,11 @@ public class DepartamentoService {
     @Autowired
     DepartamentoRepository departamentoRepository;
 
+
     public Departamento createDepartamento(Departamento departamento) {
         return departamentoRepository.save(departamento);
     }
+
 
     public List<DepartamentoDTO> getDepartamentos(){
 

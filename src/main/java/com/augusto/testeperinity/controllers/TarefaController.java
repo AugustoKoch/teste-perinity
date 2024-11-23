@@ -37,10 +37,10 @@ public class TarefaController {
 
     //Alocar uma pessoa na tarefa que tenha o mesmo departamento (put/tarefas/alocar/{id})
     @PutMapping("/alocar/{id}")
-    public ResponseEntity<Object> alocarPessoa(@Valid @PathVariable Long id, @RequestBody AlocacaoDTO alocacaoDTO) {
+    public ResponseEntity<Object> alocarPessoaNaTarefa(@Valid @PathVariable Long id, @RequestBody AlocacaoDTO alocacaoDTO) {
         Long pessoaId = alocacaoDTO.getPessoaId();
         try {
-            Tarefa tarefa = tarefaService.alocarPessoa(id, pessoaId);
+            Tarefa tarefa = tarefaService.alocarPessoaNaTarefa(id, pessoaId);
             return new ResponseEntity<>(tarefa, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
