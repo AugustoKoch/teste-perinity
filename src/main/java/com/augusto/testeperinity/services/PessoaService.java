@@ -26,7 +26,7 @@ public class PessoaService {
 
     private static int somaTotalHoras(Pessoa pessoa) {
         return pessoa.getTarefas().stream()
-                .mapToInt(tarefa -> tarefa.getDuracao() != null ? tarefa.getDuracao() : 0)
+                .mapToInt(Tarefa::getDuracao)
                 .sum();
     }
 
@@ -84,26 +84,19 @@ public class PessoaService {
 
 
     public Pessoa updatePessoa(Long id, Pessoa pessoa){
-        Optional<Pessoa> pessoaOptional = pessoaRepository.findById(id);
+        Pessoa pessoaExistente = pessoaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
 
-        if (pessoaOptional.isPresent()){
-            Pessoa pessoaExistente = pessoaOptional.get();
+        BeanUtils.copyProperties(pessoa, pessoaExistente, "id","tarefas" );
 
-            BeanUtils.copyProperties(pessoa, pessoaExistente, "id","tarefas" );
-
-
-            pessoaExistente.getTarefas().clear();
-            if (pessoa.getTarefas() != null) {
-                for (Tarefa tarefa : pessoa.getTarefas()) {
-                    tarefa.setPessoa(pessoaExistente);
-                    pessoaExistente.getTarefas().add(tarefa);
-                }
+        pessoaExistente.getTarefas().clear();
+        if (!pessoa.getTarefas().isEmpty()) {
+            for (Tarefa tarefa : pessoa.getTarefas()) {
+                tarefa.setPessoa(pessoaExistente);
+                pessoaExistente.getTarefas().add(tarefa);
             }
-            return pessoaRepository.save(pessoaExistente);
-
-        } else {
-            throw new RuntimeException("Pessoa não encontrada");
         }
+        return pessoaRepository.save(pessoaExistente);
     }
 
 

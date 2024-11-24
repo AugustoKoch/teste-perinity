@@ -61,7 +61,7 @@ public class PessoaController {
 
     //Alterar uma pessoa (put/pessoas/{id})
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updatePessoa(@PathVariable Long id, @RequestBody Pessoa pessoa){
+    public ResponseEntity<Object> updatePessoa(@PathVariable Long id,@Valid @RequestBody Pessoa pessoa){
         try {
             Pessoa pessoaAlterada = pessoaService.updatePessoa(id, pessoa);
             return new ResponseEntity<>(pessoaAlterada, HttpStatus.OK);
