@@ -27,8 +27,12 @@ public class DepartamentoController {
 
     //Listar departamento e quantidade de pessoas e tarefas (get/departamentos)
     @GetMapping
-    public ResponseEntity<List<DepartamentoDTO>> getDepartamentos() {
-        List<DepartamentoDTO> departamentos = departamentoService.getDepartamentos();
-        return new ResponseEntity<>(departamentos, HttpStatus.OK);
+    public ResponseEntity<Object> getDepartamentos() {
+        try {
+            List<DepartamentoDTO> departamentos = departamentoService.getDepartamentos();
+            return new ResponseEntity<>(departamentos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

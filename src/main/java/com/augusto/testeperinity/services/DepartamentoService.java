@@ -24,6 +24,8 @@ public class DepartamentoService {
     public List<DepartamentoDTO> getDepartamentos(){
 
         List<Departamento> departamentos = departamentoRepository.findAll();
+        if (departamentos.isEmpty())
+            throw new RuntimeException("Nenhum departamento cadastrado");
 
         List<DepartamentoDTO> departamentoDTOList = new ArrayList<>();
 
