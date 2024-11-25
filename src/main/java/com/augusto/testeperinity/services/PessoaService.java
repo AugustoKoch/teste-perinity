@@ -44,6 +44,8 @@ public class PessoaService {
 
     public List<PessoaResumoDTO> getPessoasTotalHoras() {
         List<Pessoa> pessoas = pessoaRepository.findAll();
+        if (pessoas.isEmpty())
+            throw new RuntimeException("Nenhuma pessoa cadastrada");
 
         return pessoas.stream()
                 .map(pessoa -> new PessoaResumoDTO(

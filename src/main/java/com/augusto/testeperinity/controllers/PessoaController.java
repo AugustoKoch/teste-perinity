@@ -37,9 +37,13 @@ public class PessoaController {
 
     //Listar pessoas trazendo nome, departamento, total de horas gastas nas tarefas.(get/pessoas)
     @GetMapping
-    public ResponseEntity<List<PessoaResumoDTO>> getPessoasTotalHoras() {
-        List<PessoaResumoDTO> pessoas = pessoaService.getPessoasTotalHoras();
-        return new ResponseEntity<>(pessoas, HttpStatus.OK);
+    public ResponseEntity<Object> getPessoasTotalHoras() {
+        try {
+            List<PessoaResumoDTO> pessoas = pessoaService.getPessoasTotalHoras();
+            return new ResponseEntity<>(pessoas, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
