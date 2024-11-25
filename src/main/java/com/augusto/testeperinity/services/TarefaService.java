@@ -37,7 +37,11 @@ public class TarefaService {
 
 
     public List<Tarefa> getTarefasPendentes() {
-        return tarefaRepository.findTop3ByPessoaIsNullAndFinalizadoFalseOrderByPrazoAsc();
+        List<Tarefa> tarefasPendentes = tarefaRepository.findTop3ByPessoaIsNullAndFinalizadoFalseOrderByPrazoAsc();
+        if (tarefasPendentes.isEmpty())
+            throw new RuntimeException("Nenhuma tarefa pendente encontrada");
+
+        return tarefasPendentes;
     }
 
 

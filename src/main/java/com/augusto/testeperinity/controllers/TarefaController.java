@@ -34,8 +34,12 @@ public class TarefaController {
     //Listar 3 tarefas que estejam sem pessoa alocada com os prazos mais antigos. (get/tarefas/pendentes)
     @GetMapping("/pendentes")
     public ResponseEntity<Object> getTarefasPendentes(){
-        List<Tarefa> tarefas = tarefaService.getTarefasPendentes();
-        return new ResponseEntity<>(tarefas, HttpStatus.OK);
+        try {
+            List<Tarefa> tarefas = tarefaService.getTarefasPendentes();
+            return new ResponseEntity<>(tarefas, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 
