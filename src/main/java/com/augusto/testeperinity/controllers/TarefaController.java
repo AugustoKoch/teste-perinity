@@ -21,9 +21,13 @@ public class TarefaController {
 
     //Adicionar uma tarefa (post/tarefas)
     @PostMapping
-    public ResponseEntity<Tarefa> createTarefa(@Valid @RequestBody Tarefa tarefa) {
+    public ResponseEntity<Object> createTarefa(@Valid @RequestBody Tarefa tarefa) {
+        try {
             Tarefa tarefaCriada = tarefaService.createTarefa(tarefa);
             return new ResponseEntity<>(tarefaCriada, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 
